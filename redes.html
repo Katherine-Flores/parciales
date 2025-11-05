@@ -1,0 +1,1220 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Examen Final - Redes de Computadoras (Versión Extendida)</title>
+    <script src="/_sdk/element_sdk.js"></script>
+    <style>
+      body {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: "Poppins", sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100%;
+        overflow-x: hidden;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 40px 20px;
+      }
+
+      .header {
+        text-align: center;
+        margin-bottom: 50px;
+        color: white;
+        animation: fadeInScale 1s ease-out;
+      }
+
+      .header h1 {
+        font-size: 48px;
+        margin: 0 0 15px 0;
+        font-weight: 700;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+      }
+
+      .header p {
+        font-size: 20px;
+        margin: 0;
+        opacity: 0.95;
+        animation: fadeInScale 1.2s ease-out;
+      }
+
+      .section {
+        background: white;
+        border-radius: 16px;
+        padding: 35px;
+        margin-bottom: 30px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        opacity: 0;
+        animation: slideInUp 0.6s ease forwards;
+      }
+
+      .section:nth-child(2) {
+        animation-delay: 0.1s;
+      }
+      .section:nth-child(3) {
+        animation-delay: 0.2s;
+      }
+      .section:nth-child(4) {
+        animation-delay: 0.3s;
+      }
+      .section:nth-child(5) {
+        animation-delay: 0.4s;
+      }
+      .section:nth-child(6) {
+        animation-delay: 0.5s;
+      }
+      .section:nth-child(7) {
+        animation-delay: 0.6s;
+      }
+      .section:nth-child(8) {
+        animation-delay: 0.7s;
+      }
+
+      .section:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+      }
+
+      @keyframes slideInUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes fadeInScale {
+        from {
+          opacity: 0;
+          transform: scale(0.8);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.05);
+        }
+      }
+
+      @keyframes flowRight {
+        0% {
+          transform: translateX(-10px);
+          opacity: 0.5;
+        }
+        50% {
+          transform: translateX(5px);
+          opacity: 1;
+        }
+        100% {
+          transform: translateX(0);
+          opacity: 0.8;
+        }
+      }
+
+      .section-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 25px;
+        padding-bottom: 15px;
+        border-bottom: 3px solid #667eea;
+      }
+
+      .section-number {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        font-weight: bold;
+        margin-right: 20px;
+        flex-shrink: 0;
+      }
+
+      .section-title {
+        font-size: 26px;
+        font-weight: 700;
+        color: #2d3748;
+        margin: 0;
+      }
+
+      .content-block {
+        margin-bottom: 25px;
+      }
+
+      .content-block:last-child {
+        margin-bottom: 0;
+      }
+
+      .subsection-title {
+        font-size: 20px;
+        font-weight: 600;
+        color: #4a5568;
+        margin: 0 0 12px 0;
+        display: flex;
+        align-items: center;
+      }
+
+      .subsection-title::before {
+        content: "▸";
+        color: #667eea;
+        font-size: 24px;
+        margin-right: 10px;
+      }
+
+      .description {
+        font-size: 16px;
+        line-height: 1.7;
+        color: #4a5568;
+        margin: 0 0 15px 0;
+      }
+
+      .bullet-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      .bullet-list li {
+        padding: 10px 0 10px 35px;
+        position: relative;
+        font-size: 15px;
+        line-height: 1.6;
+        color: #4a5568;
+      }
+
+      .bullet-list li::before {
+        content: "●";
+        color: #667eea;
+        position: absolute;
+        left: 10px;
+        font-size: 18px;
+      }
+
+      .highlight {
+        background: linear-gradient(120deg, #fef3c7 0%, #fde68a 100%);
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-weight: 600;
+      }
+
+      .network-diagram {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        margin: 25px 0;
+        padding: 25px;
+        background: linear-gradient(135deg, #f0f4ff 0%, #e9ecff 100%);
+        border-radius: 12px;
+        flex-wrap: wrap;
+        gap: 15px;
+      }
+
+      .layer-box {
+        background: white;
+        border: 3px solid #667eea;
+        border-radius: 10px;
+        padding: 15px 20px;
+        text-align: center;
+        min-width: 140px;
+        box-shadow: 0 4px 10px rgba(102, 126, 234, 0.2);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        animation: fadeInScale 0.8s ease-out;
+      }
+
+      .layer-box:hover {
+        transform: translateY(-3px) scale(1.02);
+        box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+      }
+
+      .layer-box .layer-name {
+        font-weight: 700;
+        color: #667eea;
+        font-size: 16px;
+        margin-bottom: 8px;
+      }
+
+      .layer-box .layer-pdu {
+        font-size: 14px;
+        color: #4a5568;
+      }
+
+      .arrow {
+        color: #667eea;
+        font-size: 32px;
+        font-weight: bold;
+        animation: flowRight 2s ease-in-out infinite;
+      }
+
+      .comparison-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+        font-size: 15px;
+      }
+
+      .comparison-table th {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 15px;
+        text-align: left;
+        font-weight: 600;
+      }
+
+      .comparison-table td {
+        padding: 12px 15px;
+        border-bottom: 1px solid #e2e8f0;
+        color: #4a5568;
+      }
+
+      .comparison-table tr:nth-child(even) {
+        background: #f7fafc;
+      }
+
+      .comparison-table tr:hover {
+        background: #edf2f7;
+        transform: scale(1.01);
+        transition: all 0.2s ease;
+      }
+
+      .protocol-badge {
+        display: inline-block;
+        background: #667eea;
+        color: white;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 13px;
+        font-weight: 600;
+        margin-right: 8px;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .protocol-badge:hover {
+        transform: scale(1.1);
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+      }
+
+      @media (max-width: 768px) {
+        .header h1 {
+          font-size: 32px;
+        }
+
+        .header p {
+          font-size: 16px;
+        }
+
+        .section {
+          padding: 25px;
+        }
+
+        .section-title {
+          font-size: 20px;
+        }
+
+        .network-diagram {
+          flex-direction: column;
+        }
+
+        .arrow {
+          transform: rotate(90deg);
+        }
+      }
+    </style>
+    <style>
+      @view-transition {
+        navigation: auto;
+      }
+    </style>
+    <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+    <script src="https://cdn.tailwindcss.com" type="text/javascript"></script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1 id="main-title">Examen Final: Redes de Computadoras</h1>
+      </div>
+      <div class="section">
+        <div class="section-header">
+          <div class="section-number">1</div>
+          <h2 class="section-title">
+            Modelos Fundamentales y Unidades de Datos (PDU)
+          </h2>
+        </div>
+        <div class="content-block">
+          <h3 class="subsection-title">Modelo TCP/IP vs. OSI</h3>
+          <p class="description">
+            <span class="highlight">TCP/IP (4 capas)</span> es el estándar
+            práctico utilizado en Internet.
+            <span class="highlight">OSI (7 capas)</span> es el modelo conceptual
+            de referencia. Las capas superiores de OSI (Sesión, Presentación,
+            Aplicación) se consolidan en la Capa de Aplicación de TCP/IP.
+          </p>
+        </div>
+        <div class="content-block">
+          <h3 class="subsection-title">Encapsulamiento y PDU</h3>
+          <p class="description">
+            Los datos se encapsulan en cada capa. Las PDU (Unidades de Datos de
+            Protocolo) son:
+          </p>
+          <div class="network-diagram">
+            <div class="layer-box">
+              <div class="layer-name">Capa 4</div>
+              <div class="layer-pdu">Segmento/Datagrama</div>
+            </div>
+            <div class="arrow">→</div>
+            <div class="layer-box">
+              <div class="layer-name">Capa 3</div>
+              <div class="layer-pdu">Paquete</div>
+            </div>
+            <div class="arrow">→</div>
+            <div class="layer-box">
+              <div class="layer-name">Capa 2</div>
+              <div class="layer-pdu">Trama</div>
+            </div>
+            <div class="arrow">→</div>
+            <div class="layer-box">
+              <div class="layer-name">Capa 1</div>
+              <div class="layer-pdu">Bit</div>
+            </div>
+          </div>
+          <ul class="bullet-list">
+            <li>
+              <strong>Capa 4 (Transporte):</strong> Segmento (TCP) o Datagrama
+              (UDP)
+            </li>
+            <li><strong>Capa 3 (Internet):</strong> Paquete o Datagrama IP</li>
+            <li><strong>Capa 2 (Enlace):</strong> Trama (Frame)</li>
+            <li><strong>Capa 1 (Física):</strong> Bit</li>
+          </ul>
+        </div>
+      </div>
+      <div class="section">
+        <div class="section-header">
+          <div class="section-number">2</div>
+          <h2 class="section-title">Capa de Transporte (TCP, UDP y Puertos)</h2>
+        </div>
+        <div class="content-block">
+          <h3 class="subsection-title">
+            TCP (Protocolo de Control de Transmisión)
+          </h3>
+          <ul class="bullet-list">
+            <li>
+              <strong>Servicio:</strong> Orientado a conexión y
+              <span class="highlight">confiable</span>
+            </li>
+            <li>
+              <strong>Mecanismos:</strong> Usa Three-Way Handshake (SYN,
+              SYN-ACK, ACK) para establecer la sesión. Garantiza orden y
+              retransmisión
+            </li>
+            <li>
+              <strong>Control de Flujo:</strong> Ventana deslizante para evitar
+              saturar al receptor
+            </li>
+            <li>
+              <strong>Control de Congestión:</strong> Algoritmos como Slow Start
+              y Congestion Avoidance
+            </li>
+            <li>
+              <strong>Overhead:</strong> 20 bytes mínimo de cabecera +
+              establecimiento de conexión
+            </li>
+            <li>
+              <strong>Uso:</strong> FTP, HTTP/S, Correo (SMTP, POP3, IMAP), SSH,
+              Telnet
+            </li>
+          </ul>
+          <div class="tcp-handshake">
+            <h4 style="color: #667eea; margin: 20px 0 10px 0">
+              🤝 Three-Way Handshake:
+            </h4>
+            <div
+              style="
+                background: #f0f4ff;
+                padding: 15px;
+                border-radius: 8px;
+                font-family: monospace;
+              "
+            >
+              Cliente → Servidor: <strong>SYN</strong> (seq=x)<br />
+              Servidor → Cliente: <strong>SYN-ACK</strong> (seq=y, ack=x+1)<br />
+              Cliente → Servidor: <strong>ACK</strong> (seq=x+1, ack=y+1)
+            </div>
+          </div>
+        </div>
+        <div class="content-block">
+          <h3 class="subsection-title">
+            UDP (Protocolo de Datagramas de Usuario)
+          </h3>
+          <ul class="bullet-list">
+            <li>
+              <strong>Servicio:</strong>
+              <span class="highlight">Sin conexión</span> y
+              <span class="highlight">no fiable</span> (mejor esfuerzo)
+            </li>
+            <li>
+              <strong>Ventaja:</strong> Velocidad y bajo overhead (solo 8 bytes
+              de cabecera)
+            </li>
+            <li>
+              <strong>Características:</strong> No garantiza entrega, orden ni
+              control de flujo
+            </li>
+            <li>
+              <strong>Ideal para:</strong> Aplicaciones en tiempo real donde la
+              velocidad &gt; confiabilidad
+            </li>
+            <li>
+              <strong>Uso:</strong> DNS, DHCP, VoIP, Streaming (RTP), Juegos
+              online, SNMP
+            </li>
+          </ul>
+          <div class="comparison-box">
+            <h4 style="color: #667eea; margin: 20px 0 10px 0">
+              ⚡ TCP vs UDP - Comparación Rápida:
+            </h4>
+            <div
+              style="
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 15px;
+                margin-top: 15px;
+              "
+            >
+              <div
+                style="
+                  background: #e6f3ff;
+                  padding: 15px;
+                  border-radius: 8px;
+                  border-left: 4px solid #667eea;
+                "
+              >
+                <strong>TCP</strong><br />
+                ✅ Confiable<br />
+                ✅ Orden garantizado<br />
+                ❌ Más lento<br />
+                ❌ Mayor overhead
+              </div>
+              <div
+                style="
+                  background: #fff2e6;
+                  padding: 15px;
+                  border-radius: 8px;
+                  border-left: 4px solid #ff9500;
+                "
+              >
+                <strong>UDP</strong><br />
+                ⚡ Muy rápido<br />
+                ⚡ Bajo overhead<br />
+                ❌ No confiable<br />
+                ❌ Sin garantías
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="content-block">
+          <h3 class="subsection-title">
+            Puertos (TSAP - Transport Service Access Point)
+          </h3>
+          <ul class="bullet-list">
+            <li>
+              <strong>Función:</strong> Identifican la aplicación o proceso en
+              el host. Un Socket es la combinación {Dirección IP : Puerto}
+            </li>
+            <li><strong>Rango Total:</strong> 0 - 65535 (16 bits)</li>
+            <li>
+              <strong>Puertos Bien Conocidos (0-1023):</strong> Reservados para
+              servicios estándar del sistema
+            </li>
+            <li>
+              <strong>Puertos Registrados (1024-49151):</strong> Asignados por
+              IANA para aplicaciones específicas
+            </li>
+            <li>
+              <strong>Puertos Dinámicos/Privados (49152-65535):</strong> Uso
+              temporal por aplicaciones cliente
+            </li>
+          </ul>
+          <div class="ports-table">
+            <h4 style="color: #667eea; margin: 20px 0 10px 0">
+              🔌 Puertos Importantes para el Examen:
+            </h4>
+            <div
+              style="
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: 10px;
+                margin-top: 15px;
+              "
+            >
+              <div
+                style="
+                  background: #f0f9ff;
+                  padding: 12px;
+                  border-radius: 6px;
+                  border-left: 3px solid #0ea5e9;
+                "
+              >
+                <strong>HTTP:</strong> 80 (TCP)<br /><strong>HTTPS:</strong> 443
+                (TCP)
+              </div>
+              <div
+                style="
+                  background: #f0fdf4;
+                  padding: 12px;
+                  border-radius: 6px;
+                  border-left: 3px solid #22c55e;
+                "
+              >
+                <strong>FTP Data:</strong> 20 (TCP)<br /><strong
+                  >FTP Control:</strong
+                >
+                21 (TCP)
+              </div>
+              <div
+                style="
+                  background: #fef7ff;
+                  padding: 12px;
+                  border-radius: 6px;
+                  border-left: 3px solid #a855f7;
+                "
+              >
+                <strong>SMTP:</strong> 25 (TCP)<br /><strong>SMTP-SSL:</strong>
+                587 (TCP)
+              </div>
+              <div
+                style="
+                  background: #fff7ed;
+                  padding: 12px;
+                  border-radius: 6px;
+                  border-left: 3px solid #f97316;
+                "
+              >
+                <strong>DNS:</strong> 53 (UDP/TCP)<br /><strong>DHCP:</strong>
+                67/68 (UDP)
+              </div>
+              <div
+                style="
+                  background: #fef2f2;
+                  padding: 12px;
+                  border-radius: 6px;
+                  border-left: 3px solid #ef4444;
+                "
+              >
+                <strong>POP3:</strong> 110 (TCP)<br /><strong>IMAP:</strong> 143
+                (TCP)
+              </div>
+              <div
+                style="
+                  background: #f8fafc;
+                  padding: 12px;
+                  border-radius: 6px;
+                  border-left: 3px solid #64748b;
+                "
+              >
+                <strong>SSH:</strong> 22 (TCP)<br /><strong>Telnet:</strong> 23
+                (TCP)
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="section">
+        <div class="section-header">
+          <div class="section-number">3</div>
+          <h2 class="section-title">
+            Capa de Internet (IPv4, CIDR, Ruteo y NAT)
+          </h2>
+        </div>
+        <div class="content-block">
+          <h3 class="subsection-title">Protocolo IP (IPv4)</h3>
+          <ul class="bullet-list">
+            <li>
+              <strong>Característica:</strong> Protocolo de
+              <span class="highlight">datagramas sin conexión y no fiable</span>
+            </li>
+            <li>
+              <strong>Función:</strong> Interconectar redes y usar algoritmos de
+              ruteo
+            </li>
+            <li>
+              El checksum (suma de comprobación) solo se aplica a la cabecera
+              del paquete, no a los datos
+            </li>
+          </ul>
+        </div>
+        <div class="content-block">
+          <h3 class="subsection-title">Direccionamiento IPv4</h3>
+          <ul class="bullet-list">
+            <li>
+              <strong>IPv4:</strong> Dirección lógica de
+              <span class="highlight">32 bits</span> (cuatro octetos) con
+              esquema jerárquico
+            </li>
+            <li>
+              <strong>Formato:</strong> xxx.xxx.xxx.xxx donde cada xxx = 0-255
+              (8 bits)
+            </li>
+            <li><strong>Clases Tradicionales (Obsoletas):</strong></li>
+          </ul>
+          <div
+            style="
+              background: #f8fafc;
+              padding: 15px;
+              border-radius: 8px;
+              margin: 15px 0;
+            "
+          >
+            <div
+              style="
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 12px;
+              "
+            >
+              <div
+                style="
+                  background: white;
+                  padding: 12px;
+                  border-radius: 6px;
+                  border-left: 4px solid #3b82f6;
+                "
+              >
+                <strong>Clase A:</strong> 1.0.0.0 - 126.255.255.255<br /><small
+                  >Máscara: /8 (255.0.0.0)</small
+                ><br /><small>16M hosts por red</small>
+              </div>
+              <div
+                style="
+                  background: white;
+                  padding: 12px;
+                  border-radius: 6px;
+                  border-left: 4px solid #10b981;
+                "
+              >
+                <strong>Clase B:</strong> 128.0.0.0 - 191.255.255.255<br /><small
+                  >Máscara: /16 (255.255.0.0)</small
+                ><br /><small>65K hosts por red</small>
+              </div>
+              <div
+                style="
+                  background: white;
+                  padding: 12px;
+                  border-radius: 6px;
+                  border-left: 4px solid #f59e0b;
+                "
+              >
+                <strong>Clase C:</strong> 192.0.0.0 - 223.255.255.255<br /><small
+                  >Máscara: /24 (255.255.255.0)</small
+                ><br /><small>254 hosts por red</small>
+              </div>
+            </div>
+          </div>
+          <ul class="bullet-list">
+            <li>
+              <strong>CIDR (Classless Inter-Domain Routing):</strong> Esquema
+              moderno que reemplazó las clases. Permite asignación flexible de
+              bloques de red
+            </li>
+            <li>
+              <strong>Notación CIDR:</strong> 192.168.1.0/24 (los primeros 24
+              bits son red, últimos 8 son host)
+            </li>
+            <li>
+              <strong>Máscara de Subred:</strong> Distingue la porción de red de
+              la porción de host
+            </li>
+            <li>
+              <strong>Loopback:</strong>
+              <span class="highlight">127.0.0.1/8</span>. Se utiliza para probar
+              la pila TCP/IP local del host (127.0.0.0 - 127.255.255.255).
+            </li>
+          </ul>
+          <div class="cidr-example">
+            <h4 style="color: #667eea; margin: 20px 0 10px 0">
+              📊 Ejemplo CIDR:
+            </h4>
+            <div
+              style="
+                background: #f0f4ff;
+                padding: 15px;
+                border-radius: 8px;
+                font-family: monospace;
+              "
+            >
+              <strong>Red:</strong> 192.168.1.0/24<br /><strong
+                >Máscara:</strong
+              >
+              255.255.255.0<br /><strong>Rango de hosts:</strong> 192.168.1.1 -
+              192.168.1.254<br /><strong>Broadcast:</strong>
+              192.168.1.255<br /><strong>Total hosts:</strong> 254 (2^8 - 2)
+            </div>
+          </div>
+          <div class="private-ranges">
+            <h4 style="color: #667eea; margin: 20px 0 10px 0">
+              🏠 Direcciones IP Privadas (RFC 1918):
+            </h4>
+            <ul class="bullet-list">
+              <li>
+                <strong>10.0.0.0/8:</strong> 10.0.0.0 - 10.255.255.255 (16M
+                direcciones)
+              </li>
+              <li>
+                <strong>172.16.0.0/12:</strong> 172.16.0.0 - 172.31.255.255 (1M
+                direcciones)
+              </li>
+              <li>
+                <strong>192.168.0.0/16:</strong> 192.168.0.0 - 192.168.255.255
+                (65K direcciones)
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="content-block">
+          <h3 class="subsection-title">NAT (Network Address Translation)</h3>
+          <ul class="bullet-list">
+            <li>
+              <strong>Función:</strong> Traduce direcciones IP privadas
+              (internas) a direcciones IP públicas (externas) para permitir el
+              acceso a Internet.
+            </li>
+            <li>
+              <strong>Tipos Principales:</strong>
+              <ul>
+                <li style="list-style-type: circle; margin-left: 20px">
+                  <strong>NAT Estático:</strong> Mapeo uno a uno constante (una
+                  IP privada siempre usa la misma IP pública).
+                </li>
+                <li style="list-style-type: circle; margin-left: 20px">
+                  <strong>PAT (Port Address Translation):</strong> También
+                  llamado NAT Overloading. Permite que múltiples hosts usen una
+                  sola IP pública, distinguiéndolos por su
+                  <span class="highlight">número de puerto</span>. Es el método
+                  más común.
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+        <div class="content-block">
+          <h3 class="subsection-title">Ruteo Estático</h3>
+          <ul class="bullet-list">
+            <li>
+              <strong>Propósito:</strong> Configuración manual de rutas hacia
+              redes que no están directamente conectadas al router.
+            </li>
+            <li>
+              <strong>Sintaxis Común:</strong>
+              <code
+                >ip route [Red_Destino] [Máscara_Subred] [Siguiente_Salto]</code
+              >
+            </li>
+            <li>
+              <strong>Ejemplo:</strong>
+              <code>ip route 192.168.2.0 255.255.255.0 192.168.1.2</code> (Envía
+              paquetes a la red 2.0 a través del router 1.2)
+            </li>
+          </ul>
+        </div>
+        <div class="content-block">
+          <h3 class="subsection-title">Protocolos de Apoyo</h3>
+          <ul class="bullet-list">
+            <li>
+              <strong>ICMP:</strong> (Internet Control Message Protocol) para
+              mensajes de control y diagnóstico (ping)
+            </li>
+            <li>
+              <strong>ARP:</strong> (Address Resolution Protocol) Traduce una
+              dirección lógica (IP) a una dirección física (MAC) en la misma LAN
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="section">
+        <div class="section-header">
+          <div class="section-number">4</div>
+          <h2 class="section-title">
+            Protocolos de Aplicación (Correo y Multimedia)
+          </h2>
+        </div>
+        <div class="content-block">
+          <table class="comparison-table">
+            <thead>
+              <tr>
+                <th>Protocolo</th>
+                <th>Puertos (TCP/UDP)</th>
+                <th>Uso Principal</th>
+                <th>Característica</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="protocol-badge">SMTP</span></td>
+                <td>TCP/25, 587</td>
+                <td>Envío/Transferencia de correo (Servidor Saliente)</td>
+                <td>Mueve el correo del origen al destino</td>
+              </tr>
+              <tr>
+                <td><span class="protocol-badge">IMAP</span></td>
+                <td>TCP/143, 993 (SSL)</td>
+                <td>Acceso y gestión del correo en el servidor</td>
+                <td>
+                  Permite sincronización multi-dispositivo (no borra del
+                  servidor)
+                </td>
+              </tr>
+              <tr>
+                <td><span class="protocol-badge">POP3</span></td>
+                <td>TCP/110, 995 (SSL)</td>
+                <td>Recepción de correo</td>
+                <td>
+                  Descarga y elimina del servidor (acceso desde un solo
+                  dispositivo)
+                </td>
+              </tr>
+              <tr>
+                <td><span class="protocol-badge">RTP</span></td>
+                <td>UDP</td>
+                <td>Transmisión de audio/video en tiempo real</td>
+                <td>Streaming multimedia, VoIP, no garantiza entrega</td>
+              </tr>
+              <tr>
+                <td><span class="protocol-badge">RTSP</span></td>
+                <td>TCP/554</td>
+                <td>Control de sesiones multimedia</td>
+                <td>Play, pause, stop de streams (como un "control remoto")</td>
+              </tr>
+              <tr>
+                <td><span class="protocol-badge">SIP</span></td>
+                <td>UDP/TCP (5060, 5061)</td>
+                <td>Señalización VoIP</td>
+                <td>Establece, modifica y termina sesiones multimedia</td>
+              </tr>
+              <tr>
+                <td><span class="protocol-badge">H.323</span></td>
+                <td>Suite de Protocolos</td>
+                <td>Videoconferencia y VoIP</td>
+                <td>Estándar ITU-T para comunicaciones multimedia</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="section">
+        <div class="section-header">
+          <div class="section-number">5</div>
+          <h2 class="section-title">Práctica de Redes Extendidas</h2>
+        </div>
+        <div class="content-block">
+          <h3 class="subsection-title">
+            DHCP (Dynamic Host Configuration Protocol)
+          </h3>
+          <ul class="bullet-list">
+            <li>
+              <strong>Función:</strong> Asignación automática de direcciones IP
+              y configuración de red
+            </li>
+            <li>
+              <strong>Proceso (DORA):</strong> <strong>D</strong>ISCOVER →
+              <strong>O</strong>FFER → <strong>R</strong>EQUEST →
+              <strong>A</strong>CK
+            </li>
+            <li>
+              <strong>Parámetros:</strong> IP, máscara de subred, gateway, DNS,
+              tiempo de concesión
+            </li>
+          </ul>
+        </div>
+        <div class="content-block">
+          <h3 class="subsection-title">DHCP Relay Agent</h3>
+          <ul class="bullet-list">
+            <li>
+              <strong>Propósito:</strong> Permite que clientes DHCP en una
+              subred obtengan direcciones de un servidor DHCP en otra subred
+            </li>
+            <li>
+              <strong>Funcionamiento:</strong> El router actúa como
+              intermediario, reenviando mensajes DHCP broadcast como unicast al
+              servidor
+            </li>
+            <li>
+              Esencial en redes empresariales con múltiples subredes y un
+              servidor DHCP centralizado
+            </li>
+          </ul>
+        </div>
+        <div class="content-block">
+          <h3 class="subsection-title">Troubleshooting de Redes</h3>
+          <div class="troubleshooting-tools">
+            <h4 style="color: #667eea; margin: 20px 0 15px 0">
+              🔧 Herramientas de Diagnóstico:
+            </h4>
+            <div
+              style="
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                gap: 15px;
+                margin-bottom: 20px;
+              "
+            >
+              <div
+                style="
+                  background: #f0f9ff;
+                  padding: 15px;
+                  border-radius: 8px;
+                  border-left: 4px solid #0ea5e9;
+                "
+              >
+                <strong>ping</strong><br /><small
+                  >Verifica conectividad básica usando ICMP Echo
+                  Request/Reply</small
+                ><br /><code
+                  style="
+                    background: #e0f2fe;
+                    padding: 2px 6px;
+                    border-radius: 3px;
+                  "
+                  >ping 8.8.8.8</code
+                >
+              </div>
+              <div
+                style="
+                  background: #f0fdf4;
+                  padding: 15px;
+                  border-radius: 8px;
+                  border-left: 4px solid #22c55e;
+                "
+              >
+                <strong>traceroute/tracert</strong><br /><small
+                  >Muestra la ruta completa que toman los paquetes (los
+                  saltos)</small
+                ><br /><code
+                  style="
+                    background: #dcfce7;
+                    padding: 2px 6px;
+                    border-radius: 3px;
+                  "
+                  >tracert google.com</code
+                >
+              </div>
+              <div
+                style="
+                  background: #fef7ff;
+                  padding: 15px;
+                  border-radius: 8px;
+                  border-left: 4px solid #a855f7;
+                "
+              >
+                <strong>ipconfig/ifconfig</strong><br /><small
+                  >Configuración de red del host (IP, máscara, gateway)</small
+                ><br /><code
+                  style="
+                    background: #fae8ff;
+                    padding: 2px 6px;
+                    border-radius: 3px;
+                  "
+                  >ipconfig /all</code
+                >
+              </div>
+              <div
+                style="
+                  background: #fff7ed;
+                  padding: 15px;
+                  border-radius: 8px;
+                  border-left: 4px solid #f97316;
+                "
+              >
+                <strong>nslookup/dig</strong><br /><small
+                  >Diagnóstico de resolución DNS</small
+                ><br /><code
+                  style="
+                    background: #fed7aa;
+                    padding: 2px 6px;
+                    border-radius: 3px;
+                  "
+                  >nslookup google.com</code
+                >
+              </div>
+              <div
+                style="
+                  background: #fef2f2;
+                  padding: 15px;
+                  border-radius: 8px;
+                  border-left: 4px solid #ef4444;
+                "
+              >
+                <strong>netstat</strong><br /><small
+                  >Conexiones activas y puertos en escucha</small
+                ><br /><code
+                  style="
+                    background: #fecaca;
+                    padding: 2px 6px;
+                    border-radius: 3px;
+                  "
+                  >netstat -an</code
+                >
+              </div>
+              <div
+                style="
+                  background: #f8fafc;
+                  padding: 15px;
+                  border-radius: 8px;
+                  border-left: 4px solid #64748b;
+                "
+              >
+                <strong>arp -a</strong><br /><small
+                  >Muestra la tabla de caché ARP (mapeo IP a MAC)</small
+                ><br /><code
+                  style="
+                    background: #e2e8f0;
+                    padding: 2px 6px;
+                    border-radius: 3px;
+                  "
+                  >arp -a</code
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="section">
+        <div class="section-header">
+          <div class="section-number">6</div>
+          <h2 class="section-title">
+            Capa de Enlace de Datos (MAC, Switches y LANs)
+          </h2>
+        </div>
+        <div class="content-block">
+          <h3 class="subsection-title">Direccionamiento Físico (MAC)</h3>
+          <ul class="bullet-list">
+            <li>
+              <strong>MAC (Media Access Control):</strong> Dirección física de
+              <span class="highlight"><strong>48 bits</strong></span> (6
+              octetos) única para cada tarjeta de red (NIC).
+            </li>
+            <li>
+              <strong>Estructura:</strong> Los primeros 24 bits son el
+              <strong>OUI</strong> (Organizationally Unique Identifier,
+              fabricante) y los últimos 24 bits son el número de serie.
+            </li>
+            <li>
+              <strong>Uso:</strong> Se utiliza para la comunicación
+              <span class="highlight"
+                >dentro de una misma LAN o segmento de red</span
+              >.
+            </li>
+          </ul>
+        </div>
+        <div class="content-block">
+          <h3 class="subsection-title">Switches y Segmentación</h3>
+          <ul class="bullet-list">
+            <li>
+              <strong>Switch:</strong> Dispositivo principal de Capa 2. Usa la
+              dirección MAC para reenviar las PDU (<strong>Tramas</strong>).
+            </li>
+            <li>
+              <strong>Tabla MAC/CAM:</strong> El switch la utiliza para aprender
+              dinámicamente qué dirección MAC está conectada a qué puerto.
+            </li>
+            <li>
+              <strong>VLAN (Virtual LAN):</strong> Permite segmentar redes
+              lógicas dentro de un switch físico para aislar el tráfico y
+              reducir el tamaño de los dominios de
+              <span class="highlight">broadcast</span>.
+            </li>
+          </ul>
+        </div>
+        <div class="content-block">
+          <h3 class="subsection-title">STP (Spanning Tree Protocol)</h3>
+          <ul class="bullet-list">
+            <li>
+              <strong>Función:</strong> Esencial para prevenir la formación de
+              <strong>bucles (loops)</strong> en la topología de la red de Capa
+              2.
+            </li>
+            <li>
+              <strong>Mecanismo:</strong> Deshabilita de forma lógica las rutas
+              redundantes (bloqueando puertos) para asegurar un único camino
+              hacia cualquier destino.
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="section">
+        <div class="section-header">
+          <div class="section-number">7</div>
+          <h2 class="section-title">
+            Protocolos de Transferencia de Archivos (FTP/TFTP)
+          </h2>
+        </div>
+        <div class="content-block">
+          <h3 class="subsection-title">FTP (File Transfer Protocol)</h3>
+          <ul class="bullet-list">
+            <li>
+              <strong>Puertos:</strong> Utiliza
+              <strong>dos canales</strong> separados:
+              <span class="highlight"><strong>21/TCP</strong> (Control)</span> y
+              <span class="highlight"><strong>20/TCP</strong> (Datos)</span>.
+            </li>
+            <li>
+              <strong>Modo Activo:</strong> El cliente inicia el canal de
+              control, y el
+              <strong>servidor inicia el canal de datos</strong> hacia el
+              cliente.
+            </li>
+            <li>
+              <strong>Modo Pasivo:</strong> El cliente inicia
+              <span class="highlight">ambos canales</span> (control y datos)
+              para sortear problemas de firewall en el cliente.
+            </li>
+            <li>
+              <strong>Seguridad:</strong> Se vuelve seguro con
+              <span class="highlight">SFTP</span> (usa SSH) o
+              <span class="highlight">FTPS</span> (usa SSL/TLS).
+            </li>
+          </ul>
+        </div>
+        <div class="content-block">
+          <h3 class="subsection-title">
+            TFTP (Trivial File Transfer Protocol)
+          </h3>
+          <ul class="bullet-list">
+            <li>
+              <strong>Servicio:</strong> Protocolo simple de transferencia de
+              archivos, usa
+              <span class="highlight"><strong>UDP/69</strong></span
+              >.
+            </li>
+            <li>
+              <strong>Características:</strong> Es
+              <span class="highlight">no confiable</span>, no tiene
+              autenticación ni manejo de sesión. Ideal para
+              <span class="highlight">transferencias pequeñas</span> o la carga
+              inicial (bootstrapping) de dispositivos de red.
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
