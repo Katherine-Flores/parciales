@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Guía de Estudio: OWASP Top 10 - Seguridad Web</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <script src="/_sdk/element_sdk.js"></script>
+    <script src="https://cdn.tailwindcss.com" type="text/javascript"></script>
+    <link
+      href="https://cdn.boxicons.com/3.0.3/fonts/basic/boxicons.min.css"
+      rel="stylesheet"
+    />
+
+    <style>
+      /* Estilos proporcionados por el usuario */
+      body {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: "Poppins", sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh; /* Cambiado a 100vh para asegurar el gradiente */
+        overflow-x: hidden;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 40px 20px;
+      }
+
+      .header {
+        text-align: center;
+        margin-bottom: 50px;
+        color: white;
+        animation: fadeInScale 1s ease-out;
+      }
+
+      .header h1 {
+        font-size: 48px;
+        margin: 0 0 15px 0;
+        font-weight: 700;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+      }
+
+      .header p {
+        font-size: 20px;
+        margin: 0;
+        opacity: 0.95;
+        animation: fadeInScale 1.2s ease-out;
+      }
+
+      .section {
+        background: white;
+        border-radius: 16px;
+        padding: 35px;
+        margin-bottom: 30px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        opacity: 0;
+        animation: slideInUp 0.6s ease forwards;
+      }
+
+      /* Ajuste de delays para que todas las secciones funcionen */
+      .section:nth-child(3) {
+        animation-delay: 0.1s;
+      }
+      .section:nth-child(4) {
+        animation-delay: 0.2s;
+      }
+      .section:nth-child(5) {
+        animation-delay: 0.3s;
+      }
+      .section:nth-child(6) {
+        animation-delay: 0.4s;
+      }
+      .section:nth-child(7) {
+        animation-delay: 0.5s;
+      }
+      .section:nth-child(8) {
+        animation-delay: 0.6s;
+      }
+      .section:nth-child(9) {
+        animation-delay: 0.7s;
+      }
+      .section:nth-child(10) {
+        animation-delay: 0.8s;
+      }
+      .section:nth-child(11) {
+        animation-delay: 0.9s;
+      }
+      .section:nth-child(12) {
+        animation-delay: 1s;
+      }
+      .section:nth-child(13) {
+        animation-delay: 1.1s;
+      } /* Añadido para A10 */
+      .section:nth-child(14) {
+        animation-delay: 1.2s;
+      } /* Añadido para el último bloque */
+
+      .section:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+      }
+
+      @keyframes slideInUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes fadeInScale {
+        from {
+          opacity: 0;
+          transform: scale(0.8);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.05);
+        }
+      }
+
+      @keyframes flowRight {
+        0% {
+          transform: translateX(-10px);
+          opacity: 0.5;
+        }
+        50% {
+          transform: translateX(5px);
+          opacity: 1;
+        }
+        100% {
+          transform: translateX(0);
+          opacity: 0.8;
+        }
+      }
+
+      .section-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 25px;
+        padding-bottom: 15px;
+        border-bottom: 3px solid #667eea;
+      }
+
+      .section-number {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        font-weight: bold;
+        margin-right: 20px;
+        flex-shrink: 0;
+        /* Animación extra para los números del Top 10 */
+        animation: pulse 2s infinite ease-in-out;
+      }
+
+      .section-title {
+        font-size: 26px;
+        font-weight: 700;
+        color: #2d3748;
+        margin: 0;
+      }
+
+      .content-block {
+        margin-bottom: 25px;
+      }
+
+      .content-block:last-child {
+        margin-bottom: 0;
+      }
+
+      .subsection-title {
+        font-size: 20px;
+        font-weight: 600;
+        color: #4a5568;
+        margin: 0 0 12px 0;
+        display: flex;
+        align-items: center;
+      }
+
+      .subsection-title::before {
+        content: "▸";
+        color: #667eea;
+        font-size: 24px;
+        margin-right: 10px;
+      }
+
+      .description {
+        font-size: 16px;
+        line-height: 1.7;
+        color: #4a5568;
+        margin: 0 0 15px 0;
+      }
+
+      .bullet-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      .bullet-list li {
+        padding: 10px 0 10px 35px;
+        position: relative;
+        font-size: 15px;
+        line-height: 1.6;
+        color: #4a5568;
+      }
+
+      .bullet-list li::before {
+        content: "●";
+        color: #667eea;
+        position: absolute;
+        left: 10px;
+        font-size: 18px;
+      }
+
+      .highlight {
+        background: linear-gradient(120deg, #fef3c7 0%, #fde68a 100%);
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-weight: 600;
+      }
+
+      .network-diagram {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 25px 0;
+        padding: 25px;
+        background: linear-gradient(135deg, #f0f4ff 0%, #e9ecff 100%);
+        border-radius: 12px;
+        flex-wrap: wrap;
+        gap: 15px;
+      }
+
+      .layer-box {
+        background: white;
+        border: 3px solid #667eea;
+        border-radius: 10px;
+        padding: 15px 20px;
+        text-align: center;
+        max-width: 200px;
+        box-shadow: 0 4px 10px rgba(102, 126, 234, 0.2);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        animation: fadeInScale 0.8s ease-out;
+      }
+
+      /* Estilos específicos para el diagrama SDLC */
+      .layer-box.sdlc-phase {
+        border-color: #764ba2;
+        box-shadow: 0 4px 10px rgba(118, 75, 162, 0.2);
+      }
+
+      .layer-box.sdlc-phase .layer-name {
+        color: #764ba2;
+      }
+
+      .layer-box:hover {
+        transform: translateY(-3px) scale(1.02);
+        box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+      }
+
+      .layer-box .layer-name {
+        font-weight: 700;
+        color: #667eea;
+        font-size: 16px;
+        margin-bottom: 8px;
+      }
+
+      .layer-box .layer-pdu {
+        font-size: 14px;
+        color: #4a5568;
+      }
+
+      .arrow {
+        color: #667eea;
+        font-size: 32px;
+        font-weight: bold;
+        animation: flowRight 2s ease-in-out infinite;
+        display: none; /* Ocultar en móviles */
+      }
+
+      /* Mostrar flecha en desktop */
+      @media (min-width: 769px) {
+        .arrow {
+          display: block;
+        }
+      }
+
+      .comparison-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+        font-size: 15px;
+      }
+
+      .comparison-table th {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 15px;
+        text-align: left;
+        font-weight: 600;
+      }
+
+      .comparison-table td {
+        padding: 12px 15px;
+        border-bottom: 1px solid #e2e8f0;
+        color: #4a5568;
+      }
+
+      .comparison-table tr:nth-child(even) {
+        background: #f7fafc;
+      }
+
+      .comparison-table tr:hover {
+        background: #edf2f7;
+        transform: scale(1.01);
+        transition: all 0.2s ease;
+      }
+
+      .protocol-badge {
+        display: inline-block;
+        background: #667eea;
+        color: white;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 13px;
+        font-weight: 600;
+        margin-right: 8px;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .protocol-badge:hover {
+        transform: scale(1.1);
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+      }
+
+      /* Estilo para nuevas categorías */
+      .new-category {
+        background: linear-gradient(90deg, #d1e6ff 0%, #90bfff 100%);
+        color: #0b409c;
+        font-weight: 700;
+        padding: 2px 6px;
+        border-radius: 4px;
+        margin-left: 10px;
+      }
+
+      @media (max-width: 768px) {
+        .header h1 {
+          font-size: 32px;
+        }
+
+        .header p {
+          font-size: 16px;
+        }
+
+        .section {
+          padding: 25px;
+        }
+
+        .section-title {
+          font-size: 20px;
+        }
+
+        .network-diagram {
+          flex-direction: column;
+        }
+
+        .arrow {
+          transform: rotate(90deg);
+          margin: 10px 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header class="header">
+        <h1
+          style="
+            display: flex;
+            justify-content: center;
+            gap: 100px;
+            position: relative;
+          "
+        >
+          <a href="index.html"
+            ><i
+              class="bx bxs-home"
+              style="color: #ffffff; position: absolute; top: 0.2em"
+            ></i
+          ></a>
+          OWASP Top 10: 2021
+        </h1>
+      </header>
+
+      <div class="section">
+        <div class="section-header">
+          <h2 class="section-title">Visión General: El Top 10 en Cifras</h2>
+        </div>
+        <div class="content-block">
+          <p class="description">
+            El OWASP Top 10 es un documento de conciencia estándar para
+            desarrolladores y profesionales de la seguridad web. Representa un
+            consenso amplio y global sobre los riesgos de seguridad más críticos
+            para las aplicaciones web.
+          </p>
+          <table class="comparison-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Riesgo Crítico (2021)</th>
+                <th>Cambio vs 2017</th>
+                <th>Enfoque Principal</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>A01</td>
+                <td>Control de Acceso Roto</td>
+                <td>↑ Del 5 al 1 (Ascenso crítico)</td>
+                <td>Fallos en la autorización y permisos.</td>
+              </tr>
+              <tr>
+                <td>A02</td>
+                <td>Fallas Criptográficas</td>
+                <td>↑ Del 3 al 2 (Renombrada de Datos Sensibles)</td>
+                <td>Protección inadecuada de datos en reposo y en tránsito.</td>
+              </tr>
+              <tr>
+                <td>A03</td>
+                <td>Inyección</td>
+                <td>↓ Del 1 al 3 (XSS ahora incluida)</td>
+                <td>
+                  Envío de datos maliciosos no confiables a un intérprete.
+                </td>
+              </tr>
+              <tr>
+                <td>A04</td>
+                <td>Diseño Inseguro <span class="new-category">NUEVA</span></td>
+                <td>NUEVA (Se enfoca en fallas de diseño)</td>
+                <td>
+                  Ausencia de modelado de amenazas y principios de diseño
+                  seguro.
+                </td>
+              </tr>
+              <tr>
+                <td>A05</td>
+                <td>Mala Configuración de Seguridad</td>
+                <td>↑ Del 6 al 5</td>
+                <td>
+                  Configuraciones por defecto, permisos abiertos, errores
+                  verbosos.
+                </td>
+              </tr>
+              <tr>
+                <td>A06</td>
+                <td>Componentes Vulnerables y Obsoletos</td>
+                <td>↓ Del 9 al 6 (Renombrada)</td>
+                <td>
+                  Uso de librerías/frameworks con vulnerabilidades conocidas.
+                </td>
+              </tr>
+              <tr>
+                <td>A07</td>
+                <td>Fallos de Identificación y Autenticación</td>
+                <td>↓ Del 2 al 7 (Renombrada de Autenticación Rota)</td>
+                <td>Debilidades en la gestión de credenciales y sesiones.</td>
+              </tr>
+              <tr>
+                <td>A08</td>
+                <td>
+                  Fallas de Integridad de Software y Datos
+                  <span class="new-category">NUEVA</span>
+                </td>
+                <td>NUEVA (Se enfoca en integridad de datos/código)</td>
+                <td>
+                  No verificar la integridad de actualizaciones, código o
+                  dependencias.
+                </td>
+              </tr>
+              <tr>
+                <td>A09</td>
+                <td>Fallas de Registro y Monitoreo de Seguridad</td>
+                <td>↑ Del 10 al 9 (Renombrada)</td>
+                <td>
+                  Ausencia o ineficacia de logs y alertas para detectar ataques.
+                </td>
+              </tr>
+              <tr>
+                <td>A10</td>
+                <td>
+                  Falsificación de Solicitudes del Lado del Servidor (SSRF)
+                  <span class="new-category">NUEVA</span>
+                </td>
+                <td>NUEVA (Basada en encuesta de expertos)</td>
+                <td>
+                  Forzar al servidor a realizar peticiones a recursos internos.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-header">
+          <h2 class="section-title">
+            El Concepto "Shift Left": SDLC Seguro 🚀
+          </h2>
+        </div>
+        <div class="content-block">
+          <p class="description">
+            La <span class="highlight">Guía de Pruebas de OWASP</span> enfatiza
+            que los fallos de seguridad deben corregirse lo antes posible,
+            siendo la fase de **Diseño** la más efectiva en costes.
+          </p>
+          <div class="network-diagram">
+            <div class="layer-box sdlc-phase">
+              <div class="layer-name">1. Requisitos / Diseño</div>
+              <div class="layer-pdu">
+                Modelado de Amenazas (Threat Modeling)
+              </div>
+            </div>
+            <div class="arrow">→</div>
+            <div class="layer-box sdlc-phase">
+              <div class="layer-name">2. Desarrollo</div>
+              <div class="layer-pdu">Revisión de Código Estático (SAST)</div>
+            </div>
+            <div class="arrow">→</div>
+            <div class="layer-box sdlc-phase">
+              <div class="layer-name">3. Pruebas</div>
+              <div class="layer-pdu">Pentesting / Pruebas Dinámicas (DAST)</div>
+            </div>
+            <div class="arrow">→</div>
+            <div class="layer-box sdlc-phase">
+              <div class="layer-name">4. Despliegue / Mantenimiento</div>
+              <div class="layer-pdu">Monitoreo y Parches de Seguridad</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-header">
+          <div class="section-number">A01</div>
+          <h2 class="section-title">Control de Acceso Roto</h2>
+        </div>
+        <div class="content-block">
+          <p class="description">
+            Las fallas en la lógica de autorización permiten a los atacantes
+            acceder a funcionalidades que no deberían tener (ej.
+            <span class="highlight"
+              >cambiar el ID de otro usuario en la URL</span
+            >, lo que se conoce como Insecure Direct Object Reference o IDOR).
+          </p>
+          <div class="subsection-title">Mitigación Clave:</div>
+          <ul class="bullet-list">
+            <li>
+              <span class="highlight">Denegar por defecto:</span> Implementar
+              mecanismos de control de acceso una sola vez en un componente de
+              confianza.
+            </li>
+            <li>Usar *tokens* de acceso no predecibles.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-header">
+          <div class="section-number">A02</div>
+          <h2 class="section-title">Fallas Criptográficas</h2>
+        </div>
+        <div class="content-block">
+          <p class="description">
+            Anteriormente 'Exposición de Datos Sensibles'. Se centra en la
+            protección inadecuada de datos. Ejemplos incluyen el uso de
+            <span class="highlight">algoritmos de *hashing* débiles</span> o
+            almacenar datos sensibles sin cifrar.
+          </p>
+          <div class="subsection-title">Mitigación Clave:</div>
+          <ul class="bullet-list">
+            <li>Identificar y clasificar datos sensibles.</li>
+            <li>
+              Utilizar TLS/SSL (HTTPS) para datos en tránsito y cifrado FIPS
+              140-2 para datos en reposo.
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-header">
+          <div class="section-number">A03</div>
+          <h2 class="section-title">Inyección</h2>
+        </div>
+        <div class="content-block">
+          <p class="description">
+            Ocurre cuando el *input* de usuario no es validado, permitiendo que
+            comandos o consultas maliciosas (ej. SQL, LDAP, OS) sean ejecutados
+            por el intérprete.
+            <span class="highlight">Cross-Site Scripting (XSS)</span> ahora es
+            parte de esta categoría.
+          </p>
+          <div class="subsection-title">Mitigación Clave:</div>
+          <ul class="bullet-list">
+            <li>
+              Utilizar
+              <span class="highlight">Consultas Parametrizadas</span> (*Prepared
+              Statements*) o *frameworks* ORM.
+            </li>
+            <li>
+              Escapar la entrada de usuario para los comandos del intérprete.
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-header">
+          <div class="section-number">A04</div>
+          <h2 class="section-title">
+            Diseño Inseguro <span class="new-category">NUEVO</span>
+          </h2>
+        </div>
+        <div class="content-block">
+          <p class="description">
+            Una categoría nueva que enfatiza fallos en la arquitectura o el
+            diseño de seguridad, no en la implementación del código. Refleja la
+            necesidad de un
+            <span class="highlight">diseño de seguridad 'preventivo'</span>.
+          </p>
+          <div class="subsection-title">Mitigación Clave:</div>
+          <ul class="bullet-list">
+            <li>Adoptar el **Modelado de Amenazas** antes del desarrollo.</li>
+            <li>
+              Establecer patrones de diseño seguro y arquitecturas de
+              referencia.
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-header">
+          <div class="section-number">A05</div>
+          <h2 class="section-title">Mala Configuración de Seguridad</h2>
+        </div>
+        <div class="content-block">
+          <p class="description">
+            Resultado de configuraciones predeterminadas inseguras,
+            configuración incompleta, o mensajes de error excesivamente
+            detallados. Ej.
+            <span class="highlight">Dejar credenciales por defecto</span> o
+            permitir métodos HTTP innecesarios.
+          </p>
+          <div class="subsection-title">Mitigación Clave:</div>
+          <ul class="bullet-list">
+            <li>
+              Implementar un proceso de *hardening* (endurecimiento) para todos
+              los componentes.
+            </li>
+            <li>
+              Desactivar funcionalidades innecesarias y eliminar archivos
+              predeterminados.
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-header">
+          <div class="section-number">A06</div>
+          <h2 class="section-title">Componentes Vulnerables y Obsoletos</h2>
+        </div>
+        <div class="content-block">
+          <p class="description">
+            Riesgo por utilizar librerías, *frameworks* o módulos de software
+            con vulnerabilidades conocidas (*CVEs*). Esto incluye componentes
+            desactualizados o no parcheados.
+          </p>
+          <div class="subsection-title">Mitigación Clave:</div>
+          <ul class="bullet-list">
+            <li>
+              Mantener un inventario de todos los componentes y sus versiones.
+            </li>
+            <li>
+              Utilizar herramientas de análisis de composición de software (SCA)
+              para monitorear vulnerabilidades.
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-header">
+          <div class="section-number">A07</div>
+          <h2 class="section-title">
+            Fallos de Identificación y Autenticación
+          </h2>
+        </div>
+        <div class="content-block">
+          <p class="description">
+            Fallas en la gestión de sesiones, credenciales y la implementación
+            de la autenticación. Ej.
+            <span class="highlight">Políticas de contraseñas débiles</span> o
+            uso de sesiones que no expiran correctamente.
+          </p>
+          <div class="subsection-title">Mitigación Clave:</div>
+          <ul class="bullet-list">
+            <li>Implementar Autenticación Multifactor (MFA).</li>
+            <li>
+              Utilizar funciones de *hashing* de contraseñas fuertes (ej.
+              Argon2, bcrypt) con *salting*.
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-header">
+          <div class="section-number">A08</div>
+          <h2 class="section-title">
+            Fallas de Integridad de Software y Datos
+            <span class="new-category">NUEVO</span>
+          </h2>
+        </div>
+        <div class="content-block">
+          <p class="description">
+            Una nueva categoría que se centra en no verificar la integridad del
+            código, los datos críticos o las actualizaciones. Refleja ataques a
+            la cadena de suministro (Supply Chain Attacks) como el de
+            SolarWinds.
+          </p>
+          <div class="subsection-title">Mitigación Clave:</div>
+          <ul class="bullet-list">
+            <li>
+              Firmar digitalmente los componentes de *software* y verificar la
+              firma antes de la ejecución.
+            </li>
+            <li>
+              Asegurar que las bibliotecas y dependencias se carguen solo de
+              repositorios de confianza.
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-header">
+          <div class="section-number">A09</div>
+          <h2 class="section-title">
+            Fallas de Registro y Monitoreo de Seguridad
+          </h2>
+        </div>
+        <div class="content-block">
+          <p class="description">
+            La <span class="highlight">falta de *logs* adecuados</span> impide
+            la detección y respuesta a un ataque. Ej. No registrar inicios de
+            sesión fallidos o no generar alertas para grandes volúmenes de
+            tráfico de datos.
+          </p>
+          <div class="subsection-title">Mitigación Clave:</div>
+          <ul class="bullet-list">
+            <li>
+              Asegurar que todos los eventos de alto riesgo tengan registros
+              auditables.
+            </li>
+            <li>
+              Implementar un sistema de gestión de eventos e información de
+              seguridad (SIEM) para monitorear en tiempo real.
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-header">
+          <div class="section-number">A10</div>
+          <h2 class="section-title">
+            Falsificación de Solicitudes del Lado del Servidor (SSRF)
+            <span class="new-category">NUEVO</span>
+          </h2>
+        </div>
+        <div class="content-block">
+          <p class="description">
+            Un atacante fuerza a la aplicación web a realizar
+            <span class="highlight">peticiones HTTP a destinos arbitrarios</span
+            >, a menudo dentro de la red interna del servidor para eludir
+            *firewalls*.
+          </p>
+          <div class="subsection-title">Mitigación Clave:</div>
+          <ul class="bullet-list">
+            <li>
+              Utilizar listas blancas (*whitelists*) para destinos permitidos.
+            </li>
+            <li>
+              Deshabilitar redirecciones HTTP y utilizar validadores de URL
+              estáticos.
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,1020 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Guía de Arquitectura: IoT, Arduino y Nintendo 3DS</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <script src="/_sdk/element_sdk.js"></script>
+    <script src="https://cdn.tailwindcss.com" type="text/javascript"></script>
+    <link
+      href="https://cdn.boxicons.com/3.0.3/fonts/basic/boxicons.min.css"
+      rel="stylesheet"
+    />
+
+    <style>
+      /* Estilos base del usuario */
+      body {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: "Poppins", sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        overflow-x: hidden;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 40px 20px;
+      }
+
+      .header {
+        text-align: center;
+        margin-bottom: 50px;
+        color: white;
+        animation: fadeInScale 1s ease-out;
+      }
+
+      .header h1 {
+        font-size: 48px;
+        margin: 0 0 15px 0;
+        font-weight: 700;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+      }
+
+      .header p {
+        font-size: 20px;
+        margin: 0;
+        opacity: 0.95;
+        animation: fadeInScale 1.2s ease-out;
+      }
+
+      .section {
+        background: white;
+        border-radius: 16px;
+        padding: 35px;
+        margin-bottom: 30px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        opacity: 0;
+        animation: slideInUp 0.6s ease forwards;
+      }
+
+      /* Ajuste de delays para animar la entrada de secciones */
+      .section:nth-child(3) {
+        animation-delay: 0.1s;
+      }
+      .section:nth-child(4) {
+        animation-delay: 0.2s;
+      }
+      .section:nth-child(5) {
+        animation-delay: 0.3s;
+      }
+      .section:nth-child(6) {
+        animation-delay: 0.4s;
+      }
+
+      .section:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+      }
+
+      @keyframes slideInUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes fadeInScale {
+        from {
+          opacity: 0;
+          transform: scale(0.8);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.03);
+        }
+      }
+
+      @keyframes flowRight {
+        0% {
+          transform: translateX(-10px);
+          opacity: 0.5;
+        }
+        50% {
+          transform: translateX(5px);
+          opacity: 1;
+        }
+        100% {
+          transform: translateX(0);
+          opacity: 0.8;
+        }
+      }
+
+      .section-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 25px;
+        padding-bottom: 15px;
+        border-bottom: 3px solid #667eea;
+      }
+
+      .section-number {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        font-weight: bold;
+        margin-right: 20px;
+        flex-shrink: 0;
+      }
+
+      /* Iconos de las secciones */
+      .section-number i {
+        animation: pulse 2s infinite ease-in-out;
+      }
+
+      .section-title {
+        font-size: 26px;
+        font-weight: 700;
+        color: #2d3748;
+        margin: 0;
+      }
+
+      .subsection-title {
+        font-size: 20px;
+        font-weight: 600;
+        color: #4a5568;
+        margin: 20px 0 12px 0;
+        display: flex;
+        align-items: center;
+      }
+
+      .subsection-title::before {
+        content: "▸";
+        color: #667eea;
+        font-size: 24px;
+        margin-right: 10px;
+      }
+
+      .description {
+        font-size: 16px;
+        line-height: 1.7;
+        color: #4a5568;
+        margin: 0 0 15px 0;
+      }
+
+      .highlight {
+        background: linear-gradient(120deg, #fef3c7 0%, #fde68a 100%);
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-weight: 600;
+      }
+
+      /* ESTILO para resaltar texto en negrita y color */
+      .bold-text {
+        font-weight: 700;
+        color: #4a0e63; /* Púrpura oscuro para alto contraste */
+      }
+
+      .comparison-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+        font-size: 15px;
+      }
+
+      .comparison-table th {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 15px;
+        text-align: left;
+        font-weight: 600;
+      }
+
+      .comparison-table td {
+        padding: 12px 15px;
+        border-bottom: 1px solid #e2e8f0;
+        color: #4a5568;
+      }
+
+      .comparison-table tr:nth-child(even) {
+        background: #f7fafc;
+      }
+
+      .comparison-table tr:hover {
+        background: #edf2f7;
+        transform: scale(1.005);
+        transition: all 0.2s ease;
+      }
+
+      /* ======================================================= */
+      /* ESTILOS DE TARJETAS DE PINES (PIN CARDS) */
+      /* ======================================================= */
+
+      .pin-cards-container {
+        display: flex;
+        flex-direction: column;
+        gap: 15px; /* Espacio entre las tarjetas */
+        margin-top: 20px;
+      }
+
+      .pin-card {
+        background: #fcfcfc; /* Fondo blanco casi puro para destacar */
+        border-radius: 8px;
+        padding: 15px 20px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        /* Borde izquierdo con color que será definido por clases específicas */
+        border-left: 6px solid;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .pin-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .card-title {
+        font-size: 18px;
+        font-weight: 700;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        padding-bottom: 5px;
+        border-bottom: 1px dotted #e0e0e0;
+      }
+
+      .card-content {
+        font-size: 15px;
+        color: #4a5568;
+        padding-left: 0;
+      }
+
+      .card-content p {
+        margin: 4px 0;
+        padding-left: 15px;
+        list-style-type: "— ";
+      }
+
+      /* Clases de colores para el borde izquierdo (Border Colors) */
+      .serial-border {
+        border-left-color: #e74c3c;
+      }
+      .i2c-border {
+        border-left-color: #3498db;
+      }
+      .spi-border {
+        border-left-color: #f39c12;
+      }
+      .gpio-border {
+        border-left-color: #27ae60;
+      }
+      .pwm-border {
+        border-left-color: #9b59b6;
+      }
+      .analog-border {
+        border-left-color: #1abc9c;
+      }
+      .interrupt-border {
+        border-left-color: #c0392b;
+      }
+      .hardware-border {
+        border-left-color: #7f8c8d;
+      }
+
+      /* Clases de colores para el texto y los íconos (Title Colors) */
+      .serial-color {
+        color: #e74c3c;
+      }
+      .i2c-color {
+        color: #3498db;
+      }
+      .spi-color {
+        color: #f39c12;
+      }
+      .gpio-color {
+        color: #27ae60;
+      }
+      .pwm-color {
+        color: #9b59b6;
+      }
+      .analog-color {
+        color: #1abc9c;
+      }
+      .interrupt-color {
+        color: #c0392b;
+      }
+      .hardware-color {
+        color: #7f8c8d;
+      }
+
+      /* ======================================================= */
+
+      /* Nuevo contenedor y estilos para la subsección de placas Arduino */
+      .arduino-boards-container {
+        display: flex;
+        justify-content: space-around;
+        gap: 20px;
+        margin: 30px 0;
+        padding: 20px;
+        background: #f0f4ff;
+        border-radius: 12px;
+        box-shadow: inset 0 0 15px rgba(102, 126, 234, 0.1);
+      }
+
+      .diagram-box {
+        min-height: 250px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+
+        background: white;
+        border: 2px solid #667eea;
+        border-radius: 8px;
+        padding: 15px;
+        text-align: center;
+        min-width: 150px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s;
+      }
+
+      .diagram-box:hover {
+        transform: scale(1.05);
+      }
+
+      .diagram-box img {
+        flex-shrink: 0;
+        object-fit: contain;
+      }
+
+      .text-description-container {
+        margin-top: auto;
+        padding-top: 10px;
+        width: 100%;
+      }
+
+      .arrow-down {
+        color: #764ba2;
+        font-size: 28px;
+        font-weight: bold;
+        animation: pulse 1.5s infinite;
+      }
+
+      /* Estilo para la lista de pines */
+      .pin-list {
+        padding-left: 20px;
+        list-style: none;
+      }
+
+      /* ESTILOS DE COLOR PARA LAS CATEGORÍAS DE PINES */
+      .pin-category {
+        margin-top: 15px;
+        font-weight: 700;
+        padding: 3px 0;
+        border-bottom: 1px dashed #ccc;
+      }
+
+      .serial-color {
+        color: #e74c3c; /* Rojo Intenso para UART */
+      }
+
+      .i2c-color {
+        color: #3498db; /* Azul Brillante para I2C */
+      }
+
+      .spi-color {
+        color: #f39c12; /* Naranja para SPI */
+      }
+
+      .gpio-color {
+        color: #27ae60; /* Verde para GPIO básico */
+      }
+
+      .pwm-color {
+        color: #9b59b6; /* Morado para PWM */
+      }
+
+      .analog-color {
+        color: #1abc9c; /* Turquesa para Analógico */
+      }
+
+      .interrupt-color {
+        color: #c0392b; /* Rojo Oscuro para Interrupciones (Crítico) */
+      }
+
+      .hardware-color {
+        color: #7f8c8d; /* Gris para Hardware Adicional */
+      }
+
+      .pin-detail {
+        margin-left: 15px;
+        list-style-type: "— ";
+        font-weight: 400;
+        color: #4a5568;
+      }
+
+      @media (max-width: 768px) {
+        .header h1 {
+          font-size: 32px;
+        }
+        .header p {
+          font-size: 16px;
+        }
+        .section {
+          padding: 25px;
+        }
+        .section-title {
+          font-size: 20px;
+        }
+        .arduino-boards-container {
+          flex-direction: column;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header class="header">
+        <h1
+          style="
+            display: flex;
+            justify-content: center;
+            gap: 100px;
+            position: relative;
+          "
+        >
+          <a href="index.html"
+            ><i
+              class="bx bxs-home"
+              style="color: #ffffff; position: absolute; top: 0.2em"
+            ></i></a
+          >Examen Final: Arquitectura de Computadoras II
+        </h1>
+      </header>
+
+      <div class="section">
+        <div class="section-header">
+          <div class="section-number">
+            <i class="bx bxs-cloud-alt" style="color: #ffffff"></i>
+          </div>
+          <h2 class="section-title">1. Internet de las Cosas (IoT)</h2>
+        </div>
+        <div class="content-block">
+          <p class="description">
+            El IoT es la interconexión de objetos físicos con sensores, software
+            y conectividad que les permite
+            <span class="highlight">recopilar e intercambiar datos</span> sin
+            intervención humana directa.
+          </p>
+
+          <div class="subsection-title">
+            Ecosistema IoT: El Diagrama de Flujo (7 Componentes)
+          </div>
+          <p class="description">
+            El flujo de datos avanza secuencialmente (1 → 4 → 3 → 5 → 6 → 7),
+            mientras que el
+            <span class="bold-text">Componente n.º 2 (Seguridad)</span> actúa de
+            manera <span class="bold-text">transversal</span>, protegiendo cada
+            etapa.
+          </p>
+
+          <div
+            style="
+              display: flex;
+              justify-content: center;
+              align-items: flex-start;
+              gap: 40px;
+              margin: 30px 0;
+            "
+          >
+            <div
+              class="diagram-box"
+              style="
+                background: #e6e0ff;
+                border: 3px solid #764ba2;
+                margin-top: 15px;
+                animation: pulse 2s infinite ease-in-out;
+                min-height: 180px;
+              "
+            >
+              <i
+                class="bx bxs-shield-alt-2"
+                style="color: #764ba2; font-size: 30px"
+              ></i>
+              <div class="bold-text" style="color: #764ba2; margin-top: 5px">
+                Componente n.º 2
+              </div>
+              <div class="font-bold text-lg" style="color: #4a0e63">
+                Seguridad
+              </div>
+              <div class="text-sm">Protección End-to-End.</div>
+            </div>
+
+            <div
+              style="
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                position: relative;
+              "
+            >
+              <div
+                style="
+                  position: absolute;
+                  left: -25px;
+                  top: 0;
+                  bottom: 0;
+                  width: 2px;
+                  border-left: 2px dashed #764ba2;
+                "
+              ></div>
+
+              <div class="diagram-box" style="min-height: 80px">
+                <div class="font-bold text-lg text-red-600">
+                  1. Dispositivos IoT
+                </div>
+                <div class="text-sm">Sensores y Actuadores.</div>
+              </div>
+              <div class="arrow-down">↓</div>
+
+              <div class="diagram-box" style="min-height: 80px">
+                <div class="font-bold text-lg text-yellow-600">
+                  4. Puerta de enlace (Gateway)
+                </div>
+                <div class="text-sm">Agregación y Protocolo.</div>
+              </div>
+              <div class="arrow-down">↓</div>
+
+              <div class="diagram-box" style="min-height: 80px">
+                <div class="font-bold text-lg text-orange-600">3. Red</div>
+                <div class="text-sm">Transporte de datos.</div>
+              </div>
+              <div class="arrow-down">↓</div>
+
+              <div class="diagram-box" style="min-height: 80px">
+                <div class="font-bold text-lg text-green-600">5. Nube</div>
+                <div class="text-sm">Almacenamiento y Procesamiento.</div>
+              </div>
+              <div class="arrow-down">↓</div>
+
+              <div class="diagram-box" style="min-height: 80px">
+                <div class="font-bold text-lg text-blue-600">6. Aplicación</div>
+                <div class="text-sm">Visualización e Interacción.</div>
+              </div>
+              <div class="arrow-down">↓</div>
+
+              <div class="diagram-box" style="min-height: 80px">
+                <div class="font-bold text-lg text-purple-600">7. Usuarios</div>
+                <div class="text-sm">Toma de Decisiones.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-header">
+          <div class="section-number">
+            <i class="bx bxs-microchip" style="color: #ffffff"></i>
+          </div>
+          <h2 class="section-title">
+            2. Arduino y Arquitecturas de Microcontroladores
+          </h2>
+        </div>
+        <div class="content-block">
+          <p class="description">
+            <span class="bold-text">Arduino</span> es una plataforma open-source
+            basada en microcontroladores, popular por su facilidad de uso en
+            proyectos de electrónica y IoT.
+          </p>
+
+          <div class="subsection-title">
+            Placas y Microcontroladores Comunes
+          </div>
+
+          <div class="arduino-boards-container">
+            <div class="diagram-box" style="border-color: #f7a83d">
+              <img
+                src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/ArduinoUno.svg/1200px-ArduinoUno.svg.png"
+                alt="Arduino Uno"
+                style="
+                  width: 230px;
+                  height: auto;
+                  margin-bottom: 0px;
+                  margin-top: 6px;
+                  border-radius: 4px;
+                "
+              />
+              <div class="text-description-container">
+                <div class="bold-text" style="color: #f7a83d">Arduino UNO</div>
+                <div class="text-sm">
+                  <span class="bold-text">MCU:</span> ATmega328P.<br />
+                  <span class="bold-text">Arquitectura:</span> Harvard.
+                </div>
+              </div>
+            </div>
+
+            <div class="diagram-box" style="border-color: #3d88f7">
+              <img
+                src="https://cdn.prod.website-files.com/5fabc8dadc66fc8a47db709b/66ffe751465f2aea3a1358be_654e6a4ee005e5d042d928cb_arduino-mega-board.webp"
+                alt="Arduino Mega"
+                style="
+                  width: 230px;
+                  height: auto;
+                  margin-bottom: 0px;
+                  margin-top: 0px;
+                  border-radius: 4px;
+                "
+              />
+              <div class="text-description-container">
+                <div class="bold-text" style="color: #3d88f7; margin-top: 5px">
+                  Arduino MEGA
+                </div>
+                <div class="text-sm">
+                  <span class="bold-text">MCU:</span> ATmega2560.<br />
+                  <span class="bold-text">Características:</span> Más I/O, más
+                  memoria.
+                </div>
+              </div>
+            </div>
+
+            <div class="diagram-box" style="border-color: #37d67a">
+              <img
+                src="https://abacasstorageaccnt.blob.core.windows.net/cirkit/2b99e246-5c26-401a-acc0-ac54b25724a9.png"
+                alt="ESP32"
+                style="
+                  width: 230px;
+                  height: auto;
+                  margin-bottom: 0px;
+                  margin-top: 16px;
+                  margin-left: 8px;
+                  border-radius: 4px;
+                "
+              />
+              <div class="text-description-container">
+                <div class="bold-text" style="color: #37d67a; margin-top: 5px">
+                  ESP32 (No Arduino)
+                </div>
+                <div class="text-sm">
+                  <span class="bold-text">MCU:</span> Tensilica LX6.<br />
+                  <span class="bold-text">Características:</span> Wi-Fi y
+                  Bluetooth nativos.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="subsection-title">
+            Clasificación de Pines y Funciones Esenciales
+          </div>
+          <p class="description">
+            Los pines del Arduino tienen
+            <span class="highlight">múltiples funciones</span>. Las capacidades
+            especiales se asocian a números de pin específicos:
+          </p>
+
+          <div class="pin-cards-container">
+            <div class="pin-card serial-border">
+              <h3 class="card-title serial-color">
+                Comunicación Serial (UART)
+              </h3>
+              <div class="card-content">
+                <p>
+                  <span class="bold-text">RX - Pin 0</span>: Recepción de datos
+                  seriales.
+                </p>
+                <p>
+                  <span class="bold-text">TX - Pin 1</span>: Transmisión de
+                  datos seriales.
+                </p>
+              </div>
+            </div>
+
+            <div class="pin-card i2c-border">
+              <h3 class="card-title i2c-color">
+                Comunicación I2C (Inter-Integrated Circuit)
+              </h3>
+              <div class="card-content">
+                <p>
+                  <span class="bold-text">SDA - Pin A4 (Digital 18)</span>:
+                  Línea de <span class="highlight">Datos</span> Seriales.
+                </p>
+                <p>
+                  <span class="bold-text">SCL - Pin A5 (Digital 19)</span>:
+                  Línea de <span class="highlight">Reloj</span> Serial (Clock).
+                </p>
+              </div>
+            </div>
+
+            <div class="pin-card spi-border">
+              <h3 class="card-title spi-color">
+                Comunicación SPI (Serial Peripheral Interface)
+              </h3>
+              <div class="card-content">
+                <p>
+                  <span class="bold-text">SS - Pin 10</span>: Chip Select
+                  (Selección de Esclavo).
+                </p>
+                <p>
+                  <span class="bold-text">MOSI - Pin 11</span>: Master Out,
+                  Slave In (Envío del Maestro).
+                </p>
+                <p>
+                  <span class="bold-text">MISO - Pin 12</span>: Master In, Slave
+                  Out (Recepción del Maestro).
+                </p>
+                <p>
+                  <span class="bold-text">SCK - Pin 13</span>: Serial Clock
+                  (Reloj de Comunicación).
+                </p>
+              </div>
+            </div>
+
+            <div class="pin-card gpio-border">
+              <h3 class="card-title gpio-color">Salida Digital (GPIO)</h3>
+              <div class="card-content">
+                <p>
+                  <span class="bold-text">Pines 0 al 19</span>: Pueden
+                  configurarse como Entrada (Input) o Salida (Output).
+                </p>
+              </div>
+            </div>
+
+            <div class="pin-card pwm-border">
+              <h3 class="card-title pwm-color">
+                Salida PWM (Pulse Width Modulation)
+              </h3>
+              <div class="card-content">
+                <p>
+                  <span class="bold-text">Pines 3, 5, 6, 9, 10, 11</span>:
+                  Permiten simular salidas analógicas (brillo, velocidad de
+                  motor).
+                </p>
+              </div>
+            </div>
+
+            <div class="pin-card analog-border">
+              <h3 class="card-title analog-color">Entrada Analógica</h3>
+              <div class="card-content">
+                <p>
+                  <span class="bold-text">Pines A0 a A5</span>: Usados para leer
+                  señales continuas del mundo real (ej. sensores de
+                  temperatura).
+                </p>
+              </div>
+            </div>
+
+            <div class="pin-card interrupt-border">
+              <h3 class="card-title interrupt-color">
+                Interrupciones Externas
+              </h3>
+              <div class="card-content">
+                <p>
+                  <span class="bold-text">INT0 - Pin 2</span>: Detiene el
+                  proceso principal para ejecutar una función urgente.
+                </p>
+                <p>
+                  <span class="bold-text">INT1 - Pin 3</span>: Segundo pin
+                  dedicado a interrupciones rápidas.
+                </p>
+              </div>
+            </div>
+
+            <div class="pin-card hardware-border">
+              <h3 class="card-title hardware-color">Hardware Adicional</h3>
+              <div class="card-content">
+                <p>
+                  <span class="bold-text">Botón de Reset</span>: Reinicia el
+                  programa desde el inicio.
+                </p>
+                <p>
+                  <span class="bold-text">Shields</span>: Placas modulares que
+                  amplían hardware y capacidades.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="subsection-title">La Arquitectura Clave: Harvard</div>
+          <p class="description">
+            Los microcontroladores de Arduino (como el ATmega328P) utilizan la
+            arquitectura <span class="bold-text">Harvard</span> para garantizar
+            un alto rendimiento.
+          </p>
+
+          <table class="comparison-table">
+            <thead>
+              <tr>
+                <th>Característica</th>
+                <th>Von Neumann (PC, Servidores)</th>
+                <th>Harvard (Arduino, DSP)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="bold-text">Memoria</span></td>
+                <td>
+                  <span class="bold-text">Unificada:</span> Una sola memoria
+                  para Datos e Instrucciones.
+                </td>
+                <td>
+                  <span class="bold-text">Separada:</span> Memorias separadas
+                  para Datos (SRAM) e Instrucciones (Flash).
+                </td>
+              </tr>
+              <tr>
+                <td><span class="bold-text">Buses</span></td>
+                <td>
+                  <span class="bold-text">Bus Único:</span> Uno para transferir
+                  todo. Causa el
+                  <span class="bold-text">"Cuello de Botella"</span>.
+                </td>
+                <td>
+                  <span class="bold-text">Buses Múltiples:</span> Buses
+                  independientes para cada memoria.
+                </td>
+              </tr>
+              <tr>
+                <td><span class="bold-text">Ejecución</span></td>
+                <td>
+                  Secuencial: Solo puede buscar una instrucción O un dato a la
+                  vez.
+                </td>
+                <td>
+                  <span class="bold-text">Paralela:</span> Puede buscar
+                  Instrucción y Dato
+                  <span class="bold-text">simultáneamente</span>
+                  (más rápido).
+                </td>
+              </tr>
+              <tr>
+                <td><span class="bold-text">Aplicación</span></td>
+                <td>Sistemas de Propósito General.</td>
+                <td>
+                  Sistemas <span class="highlight">Embedded</span>
+                  (Microcontroladores, DSP, Arduino).
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="subsection-title">Usos y Compatibilidad de Arduino</div>
+          <ul class="description bullet-list">
+            <li>
+              <span class="bold-text">Usos:</span> Domótica, robótica educativa,
+              prototipado rápido y monitoreo en IIoT.
+            </li>
+            <li>
+              <span class="bold-text">Compatibilidad:</span> Se conecta a una
+              amplia gama de <span class="highlight">Sensores</span> (digitales,
+              analógicos) y <span class="highlight">Actuadores</span> (relés,
+              motores) a través de sus pines de E/S.
+            </li>
+            <li>
+              <span class="bold-text">Aplicaciones Industriales (IIoT):</span>
+              Utilizado para crear módulos de adquisición de datos (DAQs) de
+              bajo costo o sistemas de control sencillos.
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-header">
+          <div class="section-number">
+            <i class="bx bxs-joystick" style="color: #ffffff"></i>
+          </div>
+          <h2 class="section-title">
+            3. Arquitectura Híbrida: Nintendo 3DS vs. Von Neumann
+          </h2>
+        </div>
+        <div class="content-block">
+          <p class="description">
+            La Nintendo 3DS utiliza una arquitectura
+            <span class="bold-text">altamente paralela y especializada</span>
+            para manejar gráficos 3D y retrocompatibilidad, alejándose del
+            modelo simple de Von Neumann.
+          </p>
+
+          <div class="subsection-title">CPU y Paralelismo</div>
+          <ul class="description bullet-list">
+            <li>
+              <span class="bold-text">CPU Principal:</span>
+              <span class="highlight">Dual Core ARM11</span> (268 MHz) para el
+              juego y SO de 3DS.
+            </li>
+            <li>
+              <span class="bold-text">CPU Secundario:</span>
+              <span class="highlight">Single Core ARM9</span> para asegurar la
+              <span class="bold-text">retrocompatibilidad</span> con los juegos
+              de Nintendo DS.
+            </li>
+            <li>
+              <span class="bold-text">GPU:</span>
+              <span class="bold-text">DMP Pica200</span> dedicada, la cual debe
+              renderizar <span class="bold-text">dos frames</span> (400x240)
+              simultáneamente para el efecto 3D estereoscópico.
+            </li>
+            <li>
+              <span class="bold-text">Memoria (FCRAM/VRAM):</span> Tiene 128 MB
+              de RAM principal y
+              <span class="bold-text">6 MB de VRAM dedicada</span>
+              a la GPU, crucial para el rendimiento gráfico.
+            </li>
+          </ul>
+
+          <div class="subsection-title">
+            Comparación con Von Neumann (Limitación)
+          </div>
+          <table class="comparison-table">
+            <thead>
+              <tr>
+                <th>Aspecto</th>
+                <th>Modelo Von Neumann (PC Básico)</th>
+                <th>Arquitectura 3DS (Híbrida/Especializada)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="bold-text">Procesamiento</span></td>
+                <td>Centralizado en una CPU.</td>
+                <td>
+                  <span class="bold-text">Distribuido:</span> CPU (lógica), GPU
+                  (gráficos), ARM9 (compatibilidad).
+                </td>
+              </tr>
+              <tr>
+                <td><span class="bold-text">Memoria Gráfica</span></td>
+                <td>
+                  VRAM usualmente compartida con la RAM principal (bus único).
+                </td>
+                <td>
+                  <span class="bold-text">VRAM Dedicada (6MB):</span> Acceso
+                  rápido y directo por la GPU.
+                </td>
+              </tr>
+              <tr>
+                <td><span class="bold-text">Diferencia Clave</span></td>
+                <td>
+                  Limitada por el
+                  <span class="bold-text">Cuello de Botella</span> del bus
+                  único.
+                </td>
+                <td>
+                  Utiliza
+                  <span class="bold-text"
+                    >múltiples núcleos y memorias separadas</span
+                  >
+                  (característica Harvard) para evitar el cuello de botella en
+                  los componentes críticos de juego.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="subsection-title">
+            Visualización de la Complejidad (Video de Referencia)
+          </div>
+          <div class="flex justify-center my-6">
+            <iframe
+              width="560"
+              height="315"
+              src="https://www.youtube.com/embed/Oa8LNef6nCE"
+              title="Análisis Técnico de Nintendo 3DS"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen
+              class="max-w-full rounded-lg shadow-xl"
+            ></iframe>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
